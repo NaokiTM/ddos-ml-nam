@@ -1,6 +1,6 @@
 import math
 from pox.core import core
-import pox.openflow.libopenflow_01 as of
+import pox.openflow.libopenflow_01 as openflow
 
 # we chose 32 packet window size because it's proven to be best for detecting meaningful entropy changes
 WINDOWSIZE = 32
@@ -48,7 +48,7 @@ def handlePackets(event):
         entropy = calculateAwedr(windowBuffer[switchId])
 
         if (entropy > THRESHOLD):
-            flowModObj = of.ofp_flow_mod()
+            flowModObj = openflow.ofp_flow_mod()
             flowModObj.priority = 65535
             flowModObj.match.nw_src = packetSourceIp
             event.connection.send(flowModObj)
