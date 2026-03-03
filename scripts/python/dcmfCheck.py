@@ -3,7 +3,17 @@ macSet = {}   # called S_te1 in the paper's psuedocode
 ipSet = {}   # called S_te2 in the paper's psuedocode
 
 # ran for each passing packet 
-def dcmfCheck(sourceIp, sourceMac):
+def dcmfCheck(event):
+    packet = event.parsed
+    ipPacket = packet.find('ipv4')
+
+    # a check to ensure the packet is ipv4 before proceeding
+    if ipPacket:
+        sourceIp = ipPacket.srcip
+        sourceMac = packet.src         
+    else:
+        print("packet is not ipv4")
+
 
     if sourceIp not in macSet:
         # create a new set of associated mac addresses for the source IP if it doesnt already exist
@@ -21,9 +31,9 @@ def dcmfCheck(sourceIp, sourceMac):
     ipSet[sourceMac].add(sourceIp)
 
     # deemed attack if one source ip/mac has > 1 associated mac/ip
-    if len(ipToMac[sourceIp]) > 1:  # forged IP
+    if len(macSet[sourceIp]) > 1:  # forged IP
         return 1
-    elif len(macToIp[sourceMac]) > 1: # forged MAC
+    elif len(ipSet[sourceMac]) > 1: # forged MAC
         return 1
     else:  # no attack
         return 0
