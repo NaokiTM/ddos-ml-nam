@@ -1,0 +1,13 @@
+terminal 1: 
+
+    cd /home/lilliput/pox && python3 ./pox.py log.level --DEBUG openflow.of_01 forwarding.l2_learning fmdadm.windowCheck
+
+    to kill previous process: sudo fuser -k 6633/tcp
+
+terminal 2: 
+
+    #single switch, 5 nodes. auto assigns a mac address
+    sudo mn --topo single,5 --controller=remote,ip=127.0.0.1,port=6633 --mac
+
+    #
+    h1 hping3 -S --flood -p 80 10.0.0.2
