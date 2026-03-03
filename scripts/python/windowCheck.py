@@ -51,7 +51,9 @@ def handlePackets(event):
             flowModObj.actions = []  # drop
             event.connection.send(flowModObj)
             print(f"Blocked suspicious source {packetSourceIp} (entropy={entropy:.3f})")
+        else:
+            print("safe window")
         windowBuffer[switchId] = []
-        
+
 def launch():
     core.openflow.addListenerByName("PacketIn", handlePackets)

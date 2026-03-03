@@ -10,14 +10,14 @@ module = input("Enter module: ")
 TERM_1_COMMANDS = (f"""
     sudo -S fuser -k 6633/tcp; 
     cd /home/lilliput/pox && 
-    python3 ./pox.py log.level --DEBUG openflow.of_01 forwarding.l2_learning fmdadm.{module}
+    python3 ./pox.py log.level --DEBUG --WARNING=forwarding.l2_learning openflow.of_01 forwarding.l2_learning fmdadm.{module}
 """).strip()
 
 TERM_2_COMMANDS = "sudo -S mn --topo single,5 --controller=remote,ip=127.0.0.1,port=6633 --mac"
 
 MN_COMMANDS = "\n".join([
-    "h1 hping3 -S --flood -p 80 10.0.0.2",
-    "sh sleep 15",
+    "h1 hping3 -S --flood -p 80 10.0.0.2", 
+    "sh sleep 15", 
     "h1 kill %hping3",
 ])
 
