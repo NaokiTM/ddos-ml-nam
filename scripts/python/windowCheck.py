@@ -8,21 +8,21 @@ WINDOWSIZE = 32
 # example threshold, change later
 THRESHOLD = 1
 
-windowBuffer = {}
+currentWindow = {}
 
 # using shannons entropy formula
-def calculateEntropy(buffer):
-    counts = {ip: buffer.count(ip) for ip in set(buffer)}
+def calculateEntropy(window):
+    counts = {ip: window.count(ip) for ip in set(window)}
     entropy = 0
     for count in counts.values():
-        p = count / len(buffer)
+        p = count / len(window)
         entropy -= p * math.log2(p)
     return entropy
 
 # calculating the window entropy based on packet source IP table
-def calculateAwedr(buffer):
-    awae = calculateEntropy(buffer)
-    awne = calculateEntropy(buffer)
+def calculateAwedr(window):
+    awae = calculateEntropy(window)
+    awne = calculateEntropy(window)
     awedr = ((awne-awae) / awne) * 100 if awne != 0 else 0
     return awedr
 
@@ -37,13 +37,13 @@ def handlePackets(event):
     
     packetSourceIp = ip_packet.srcip
 
-    if switchId not in windowBuffer:
-        windowBuffer[switchId] = []
+    if switchId not in currentWindow:
+        currentWindow[switchId] = []
 
-    windowBuffer[switchId].append(str(ip_packet.srcip))
+    currentWindow[switchId].append(str(ip_packet.srcip))
 
-    if (len(windowBuffer[switchId]) == WINDOWSIZE):
-        entropy = calculateEntropy(windowBuffer[switchId])
+    if (len(currentWindow[switchId]) == WINDOWSIZE):
+        entropy = calculateEntropy(currentWindow[switchId])
         if (entropy < THRESHOLD):
             flowModObj = openflow.ofp_flow_mod()
             flowModObj.priority = 65535
@@ -53,7 +53,7 @@ def handlePackets(event):
             print(f"Blocked suspicious source {packetSourceIp} (entropy={entropy:.3f})")
         else:
             print("safe window")
-        windowBuffer[switchId] = []
+        currentWindow[switchId] = []
 
 def launch():
     core.openflow.addListenerByName("PacketIn", handlePackets)
