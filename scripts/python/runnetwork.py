@@ -3,7 +3,7 @@ import time
 import sys
 import getpass
 
-
+# unsecure so change later
 password = getpass.getpass("Enter sudo password: ")
 module = input("Enter module: ")
 
