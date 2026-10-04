@@ -1,4 +1,5 @@
 terminal 1: 
+    (lilliput is my computers hostname)
 
     cd /home/lilliput/pox && python3 ./pox.py log.level --DEBUG openflow.of_01 forwarding.l2_learning fmdadm.windowCheck
 
