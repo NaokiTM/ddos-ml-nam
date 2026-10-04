@@ -1,6 +1,8 @@
-Machine Learning-Based DDoS (Distributed Denial of Service) Detection System
+# Machine Learning-Based DDoS (Distributed Denial of Service) Detection System
 
 - Source code for my final project / dissertation
+
+## Abstract:
 - This project has created a framework for DDoS attack prediction using a set of modules to create a framework to tackle changes in network traffic and block incoming malicious traffic. This framework creates a hierarchical pipeline model that will block obvious malicious traffic early, and use machine learning techniques from multiple models to potentially detect more non-linear attack traffic patterns. 
 - It uses a SDN (software defined networking) solution, chosen for its ease of use and effectiveness in controlling an entire network with multiple connected devices, which can scale to larger networks with more devices connected. 
 - This framework was tested on multiple test cases, with a different and increasing number of nodes being targeted, increasing testing standards. 
